@@ -7,6 +7,16 @@ fi
 
 NAME="$1"
 PANES="$2"
+LARUTA=$3
+ruta(){
+	if [ "$LARUTA" = "$HOME" ]; then
+		echo -n "~"
+	else
+		echo -n "$(basename $LARUTA)"
+	fi
+}
+FILE=$(ruta)
+#FILE="$3"
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_CONFIG="$CURRENT_DIR/defaults.yml"
 USER_CONFIG="$HOME/.config/tmux/tmux-nerd-font-window-name.yml"
@@ -40,6 +50,25 @@ if [ "$PANES" -gt 1 ]; then
 fi
 
 SHOW_NAME="$(get_config_value '.config.show-name')"
+if [ "$ICON" ==  "null" ]; then
+	SHOW_NAME=true
+else
+	SHOW_NAME=false
+fi
+PROBLEMATIC_GLYPHS=""
+add_extra_space() {
+	local text="$1"
+	local problematic_glyphs="$2"
+	local modified_text="$text"
+
+  # Loop through each problematic glyph and add a space after it
+  for glyph in $(echo "$problematic_glyphs" | grep -o .); do
+	  modified_text=$(echo "$modified_text" | sed "s/$glyph/$glyph /g")
+  done
+
+  echo "$modified_text"
+}
+EXTRA_SPACE=$(add_extra_space "$ICON" "$PROBLEMATIC_GLYPHS")
 if [ "$SHOW_NAME" = true ]; then
 	ICON_POSITION="$(get_config_value '.config.icon-position')"
 	if [ "$ICON_POSITION" == "right" ]; then
@@ -49,4 +78,4 @@ if [ "$SHOW_NAME" = true ]; then
 	fi
 fi
 
-echo "$ICON"
+echo -e "$EXTRA_SPACE $FILE"
