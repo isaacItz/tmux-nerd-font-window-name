@@ -37,6 +37,13 @@ get_config_value() {
 
 ICON="$(get_config_value ".icons.\"$NAME\"")"
 
+SHOW_NAME="$(get_config_value '.config.show-name')"
+if [ "$ICON" ==  "null" ]; then
+	SHOW_NAME=true
+else
+	SHOW_NAME=false
+fi
+
 if [ "$ICON" == "null" ]; then
 	FALLBACK_ICON="$(get_config_value '.config.fallback-icon')"
 	ICON="$FALLBACK_ICON"
@@ -49,26 +56,6 @@ if [ "$PANES" -gt 1 ]; then
 	fi
 fi
 
-SHOW_NAME="$(get_config_value '.config.show-name')"
-if [ "$ICON" ==  "null" ]; then
-	SHOW_NAME=true
-else
-	SHOW_NAME=false
-fi
-PROBLEMATIC_GLYPHS=""
-add_extra_space() {
-	local text="$1"
-	local problematic_glyphs="$2"
-	local modified_text="$text"
-
-  # Loop through each problematic glyph and add a space after it
-  for glyph in $(echo "$problematic_glyphs" | grep -o .); do
-	  modified_text=$(echo "$modified_text" | sed "s/$glyph/$glyph /g")
-  done
-
-  echo "$modified_text"
-}
-EXTRA_SPACE=$(add_extra_space "$ICON" "$PROBLEMATIC_GLYPHS")
 if [ "$SHOW_NAME" = true ]; then
 	ICON_POSITION="$(get_config_value '.config.icon-position')"
 	if [ "$ICON_POSITION" == "right" ]; then
@@ -78,4 +65,4 @@ if [ "$SHOW_NAME" = true ]; then
 	fi
 fi
 
-echo -e "$EXTRA_SPACE $FILE"
+echo -e "$ICON $FILE"

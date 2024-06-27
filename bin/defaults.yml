@@ -24,7 +24,7 @@ icons:
   dpkg: ""
   emacs: ""
   fdisk: ""
-  fish: ""
+  fish: " "
   git: ""
   gitui: ""
   go: ""
