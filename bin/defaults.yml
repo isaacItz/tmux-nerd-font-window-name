@@ -28,7 +28,7 @@ icons:
   dpkg: ""
   emacs: ""
   fdisk: ""
-  fish: " "
+  fish: " " 
   git: ""
   gitui: ""
   go: ""
@@ -41,7 +41,7 @@ icons:
   lazygit: ""
   lf: ""
   lfcd: ""
-  lvim: ""
+  lvim: 
   nala: ""
   node: ""
   npm: " "

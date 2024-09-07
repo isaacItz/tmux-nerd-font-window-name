@@ -35,7 +35,7 @@ get_config_value() {
 	echo "$value"
 }
 
-ICON="$(get_config_value ".icons.\"$NAME\"")"
+ICON=$(get_config_value .icons.$NAME)
 
 SHOW_NAME="$(get_config_value '.config.show-name')"
 if [ "$ICON" ==  "null" ]; then
@@ -46,23 +46,23 @@ fi
 
 if [ "$ICON" == "null" ]; then
 	FALLBACK_ICON="$(get_config_value '.config.fallback-icon')"
-	ICON="$FALLBACK_ICON"
+	ICON=$FALLBACK_ICON
 fi
 
 if [ "$PANES" -gt 1 ]; then
 	MULTI_PANE_ICON="$(get_config_value '.config.multi-pane-icon')"
 	if [ "$MULTI_PANE_ICON" != "null" ]; then
-		ICON="$MULTI_PANE_ICON $ICON"
+		ICON=$MULTI_PANE_ICON $ICON
 	fi
 fi
 
 if [ "$SHOW_NAME" = true ]; then
 	ICON_POSITION="$(get_config_value '.config.icon-position')"
 	if [ "$ICON_POSITION" == "right" ]; then
-		ICON="$NAME $ICON"
+		ICON=$NAME $ICON
 	else
-		ICON="$ICON $NAME"
+		ICON=$ICON $NAME
 	fi
 fi
-
+ICON=${ICON//\"/}
 echo -e "$ICON $FILE"
